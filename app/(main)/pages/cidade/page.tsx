@@ -36,7 +36,7 @@
     const objetoService = new CidadeService();  
     const estadoService = new EstadoService();
 
-
+       
 
     useEffect(() => {
         estadoService.buscarTodos()
@@ -300,10 +300,10 @@
         const objetoDialogFooter = (
             <>
                 <Button label="Cancelar" icon="pi pi-times" text onClick={hideDialog} />
-                <Button label="Salvar" icon="pi pi-check" text onClick={saveObjeto} />
+                <Button label="Salvar" icon="pi pi-check" text onClick={saveObjeto}  />
             </>
         );
-
+       
         const deleteObjetoDialogFooter = (
             <>
                 <Button label="Não" icon="pi pi-times" text onClick={hideDeleteObjetoDialog} />

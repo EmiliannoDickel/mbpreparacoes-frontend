@@ -41,8 +41,20 @@ declare namespace Projeto {
         endereco : string;
         cep: string;
         cidade: Cidade;
+        permissaoPessoa: PermissaoPessoa[];
 
     }
+
+    export type Permissao = {
+        id?: number;
+        nome: string;
+    }
+
+    export type PermissaoPessoa = {
+        id?: number;
+        pessoa?: Pessoa;
+        permissao: Permissao;
+    };
 }
 
 export { Projeto };

@@ -10,12 +10,14 @@
     import { Toolbar } from 'primereact/toolbar';
     import { classNames } from 'primereact/utils';
     import React, { useEffect, useRef, useState } from 'react';
+    import { Formik } from 'formik';
     import { Projeto } from '@/types';
     import { ProdutoService } from '@/service/ProdutoService';
     import { MarcaService } from '@/service/MarcaService';
     import { CategoriaService } from '@/service/CategoriaService';
     import { InputTextarea } from 'primereact/inputtextarea';
     import { InputNumber } from 'primereact/inputnumber';
+    
 
     const Produto = () => {
         const ObjetoNovo: Projeto.Produto = {  
@@ -471,16 +473,8 @@
 
                         <div className="field">
                             <label htmlFor="precoCusto">Preço de Custo</label>
-                            <InputNumber
-                                id="precoCusto"
-                                value={objeto.precoCusto}
-                                onValueChange={(e) => setObjeto({ ...objeto, precoCusto: e.value })}
-                                mode="decimal"
-                                locale="pt-BR"
-                                minFractionDigits={2}
-                                maxFractionDigits={2}
-                                useGrouping={false}
-                                className={classNames({ 'p-invalid': submitted && !objeto.precoCusto })}
+                            <InputNumber inputId="currency-brazil" value={objeto.precoCusto} onValueChange={(e) => setObjeto( {...objeto, precoCusto: e.value})} mode="currency" currency="BRL" locale="pt-BR" 
+                            className={classNames({'p-invalid': submitted && !objeto.precoCusto})} 
                             />
                             {submitted && !objeto.precoCusto && (
                                 <small className="p-invalid">Preço de custo é obrigatório.</small>
@@ -490,16 +484,10 @@
                         <div className="field">
                             <label htmlFor="precoVenda">Preço de Venda</label>
                             <InputNumber
-                                id="precoVenda"
-                                value={objeto.precoVenda}
-                                onValueChange={(e) => setObjeto({ ...objeto, precoVenda: e.value })}
-                                mode="decimal"
-                                locale="pt-BR"
-                                minFractionDigits={2}
-                                maxFractionDigits={2}
-                                useGrouping={false}
-                                className={classNames({ 'p-invalid': submitted && !objeto.precoVenda })}
+                                 inputId="precoVenda" value={objeto.precoVenda} onValueChange={(e) => setObjeto( {...objeto, precoVenda: e.value})} mode="currency" currency="BRL" locale="pt-BR" 
+                                 className={classNames({'p-invalid': submitted && !objeto.precoVenda})} 
                             />
+
                             {submitted && !objeto.precoVenda && (
                                 <small className="p-invalid">Preço de venda é obrigatório.</small>
                             )}

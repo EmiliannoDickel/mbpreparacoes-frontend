@@ -37,17 +37,9 @@ const AppMenu = () => {
             ]
         },
         {
-            label: 'Prime Blocks',
-            items: [
-                { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', to: '/blocks', badge: 'NEW' },
-                { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: 'https://blocks.primereact.org', target: '_blank' }
-            ]
-        },
-        {
             label: 'Utilities',
             items: [
-                { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', to: '/utilities/icons' },
-                { label: 'PrimeFlex', icon: 'pi pi-fw pi-desktop', url: 'https://primeflex.org/', target: '_blank' }
+                { label: 'PrimeIcons', icon: 'pi pi-fw pi-prime', to: '/utilities/icons' }
             ]
         },
         {
@@ -87,6 +79,11 @@ const AppMenu = () => {
                     to: '/pages/crud'
                 },
                 {
+                    label: 'Estado',
+                    icon: 'pi pi-fw pi-pencil',
+                    to: '/pages/estado'
+                },
+                {
                     label: 'Timeline',
                     icon: 'pi pi-fw pi-calendar',
                     to: '/pages/timeline'
@@ -96,11 +93,6 @@ const AppMenu = () => {
                     icon: 'pi pi-fw pi-exclamation-circle',
                     to: '/pages/notfound'
                 },
-                {
-                    label: 'Empty',
-                    icon: 'pi pi-fw pi-circle-off',
-                    to: '/pages/empty'
-                }
             ]
         },
         {
