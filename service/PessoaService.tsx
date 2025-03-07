@@ -20,8 +20,8 @@ export class PessoaService {
         return axiosInstance.post('pessoa/', objeto);
     }
 
-    alterar(objeto: Projeto.Pessoa) {
-        return axiosInstance.put('pessoa/', objeto);
+    alterar(id: number, pessoaAtualizada: Projeto.Pessoa) {
+        return axiosInstance.put(`pessoa/${id}`, pessoaAtualizada);
     }
 
     excluir(id: number) {

@@ -8,7 +8,7 @@ export const axiosInstance = axios.create({
 
 export class PermissaoService {
 
-    buscarTodas() {
+    pegarPermissoesLista() {
         return axiosInstance.get('permissao/');
     }
 
@@ -16,12 +16,12 @@ export class PermissaoService {
     //     return axiosInstance.get('cidade/' + id);
     // }
 
-    inserir(objeto: Projeto.Permissao) {
+    criarPermissao(objeto: Projeto.Permissao) {
         return axiosInstance.post('permissao/', objeto);
     }
 
-    alterar(objeto: Projeto.Permissao) {
-        return axiosInstance.put('permissao/', objeto);
+    atualizarPermissao(id: number, objeto: Projeto.Permissao) {
+        return axiosInstance.put('permissao/' + id + objeto);
     }
 
     excluir(id: number) {

@@ -25,12 +25,12 @@ const Pessoa = () => {
         endereco: '',
         cep: '',
         cidade: {},
-        permissaoPessoas: []
+        permissao: {}
     };
 
     const [objetos, setObjetos] = useState<Projeto.Pessoa[]>([]);
-    const [cidades, setCidades] = useState(null);
-    const [permissoes, setPermissoes] = useState<Projeto.PermissaoPessoa[]>([]);
+    const [cidades, setCidades] = useState<Projeto.Cidade[]>([]);
+    const [permissoes, setPermissoes] = useState<Projeto.Permissao[]>([]);
     const [objetoDialog, setObjetoDialog] = useState<boolean>(false);
     const [deleteObjetoDialog, setDeleteObjetoDialog] = useState<boolean>(false);
     const [deleteObjetosDialog, setDeleteObjetosDialog] = useState<boolean>(false);
@@ -49,19 +49,16 @@ const Pessoa = () => {
             setCidades(res.data);
         });
 
-        permissaoService.buscarTodas().then((res) => {
-            let permissoesTemporarias = [];
-            res.data.forEach((element) => {
-                permissoesTemporarias.push({ id: element.id, permissao: element });
-            });
-            setPermissoes(permissoesTemporarias);
-        });
-    }, []);
+        permissaoService.pegarPermissoesLista()
+        .then((res) => setPermissoes(res.data))
+        .catch((error) => console.error("Erro ao buscar permissões:", error));
+}, []);
 
     useEffect(() => {
         objetoService
             .buscarTodas()
             .then((response) => {
+                console.log(response.data);
                 setObjetos(response.data);
             })
             .catch((error) => {
@@ -123,10 +120,12 @@ const Pessoa = () => {
                 });
         } else {
             objetoService
-                .alterar(objeto)
+                .alterar(objeto.id, objeto)
                 .then((response) => {
+                    console.log(response); 
                     setObjetoDialog(false);
                     setObjeto(ObjetoNovo);
+                    
                     toast.current?.show({
                         severity: 'success',
                         summary: 'Sucesso',
@@ -249,18 +248,19 @@ const Pessoa = () => {
         setObjeto({ ...objeto, cpf: val });
     };
 
+
+    
     const onCidadeChange = (e: { value: any }) => {
         const val = e.value || '';
         setObjeto({ ...objeto, cidade: val });
     };
 
-    const onPermissaoChange = (e: { value: Projeto.PermissaoPessoa[] }) => {
-        const permissoesSelecionadas = e.value || [];
-        setObjeto({
-            ...objeto,
-            permissaoPessoas: permissoesSelecionadas
-        });
+    const onPermissaoChange = (e: { value: any }) => {
+        const val = e.value || '';
+        setObjeto({ ...objeto, permissao: val });
     };
+
+
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
@@ -343,13 +343,11 @@ const Pessoa = () => {
         );
     };
 
-    const permissaopessoaBodyTemplate = (rowData: Projeto.Pessoa) => {
+    const permissaoBodyTemplate = (rowData: Projeto) => {
         return (
             <>
                 <span className="p-column-title">Permissão</span>
-                {rowData.permissaoPessoas?.map((permissaoPessoa, index) => (
-                    <div key={index}>{permissaoPessoa.permissao.nome}</div>
-                ))}
+                {rowData.permissao && rowData.permissao.nome + '/' + rowData.permissao.permissao}
             </>
         );
     };
@@ -425,7 +423,7 @@ const Pessoa = () => {
                         <Column field="endereco" header="Endereço" sortable filter body={enderecoBodyTemplate}></Column>
                         <Column field="cep" header="CEP" body={cepBodyTemplate} sortable filter headerStyle={{ minWidth: '15rem' }}></Column>
                         <Column field="cidade" header="Cidade" body={cidadeBodyTemplate} sortable filter></Column>
-                        <Column field='permissaoPessoas' header='Permissão' body={permissaopessoaBodyTemplate} sortable filter ></Column>
+                        <Column field='permissao' header='Permissão' body={permissaoBodyTemplate} sortable filter ></Column>
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
                     </DataTable>
 
@@ -463,7 +461,6 @@ const Pessoa = () => {
                             />
                             {submitted && !objeto.cpf && <small className="p-invalid">Cpf é Obrigatório.</small>}
                         </div>
-                        
 
                         <div className="field">
                             <label htmlFor="endereco">Email</label>
@@ -514,6 +511,8 @@ const Pessoa = () => {
                             {submitted && !objeto.cep && <small className="p-invalid">Cep é Obrigatório.</small>}
                         </div>
 
+                        
+
                         <div className="field">
                             <label htmlFor="cidade">Cidade</label>
                             <Dropdown
@@ -531,19 +530,19 @@ const Pessoa = () => {
                         </div>
 
                         <div className="field">
-                            <label htmlFor="permissaoPessoas">Permissões</label>
-                            <MultiSelect
+                            <label htmlFor="permissao">Permissões</label>
+                            <Dropdown
                                 dataKey="id"
-                                id="permissaoPessoas"
-                                value={objeto.permissaoPessoas}
+                                id="permissao"
+                                value={objeto.permissao}
                                 onChange={onPermissaoChange}
                                 options={permissoes}
                                 filter
-                                optionLabel="permissao.nome"
+                                optionLabel="nome"
                                 placeholder="Selecione suas Permissões"
                                 className="w-full md:w-14rem"
                             />
-                            {submitted && (!objeto.permissaoPessoas || objeto.permissaoPessoas.length === 0) && <small className="p-invalid">Obrigatório Adicionar uma Permissão.</small>}
+                            {submitted && !objeto.permissao && <small className="p-invalid">Obrigatório Adicionar uma Permissão.</small>}
                         </div>
                     </Dialog>
 
